@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS qpie_support DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS qpie_support DEFAULT CHARACTER SET UTF8MB4 ;
 USE qpie_support ;
 
 create table if not exists qpie_support.user_complaints
