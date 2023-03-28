@@ -1,10 +1,10 @@
 
-CREATE SCHEMA IF NOT EXISTS qpie_user DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS qpie_user DEFAULT CHARACTER SET UTF8MB4 ;
 USE qpie_user ;
 
 CREATE  TABLE IF NOT EXISTS qpie_user.feed_topics (
-  topic_id INT(10) NOT NULL ,
-  segment_id INT(10) NULL DEFAULT NULL ,
+  topic_id INT NOT NULL ,
+  segment_id INT NULL DEFAULT NULL ,
   topic VARCHAR(1000) NOT NULL 
    );
 
@@ -23,7 +23,7 @@ ALTER TABLE qpie_user.locations ADD CONSTRAINT pk_locations PRIMARY KEY  (locati
 
 
 CREATE  TABLE IF NOT EXISTS qpie_user.media_type (
-  media_type_id INT(4) NOT NULL ,
+  media_type_id INT NOT NULL ,
   description VARCHAR(100) NOT NULL 
  );
 
@@ -37,7 +37,7 @@ CREATE  TABLE IF NOT EXISTS qpie_user.user (
   last_name VARCHAR(200) ,
   mobile_number VARCHAR(13) NOT NULL COMMENT 'Mobile number with country code ex: +91997290xxxx' ,
   email_id VARCHAR(200) NULL DEFAULT NULL ,
-  create_date DATETIME DEFAULT CONVERT_TZ(NOW(),'SYSTEM','UTC') ,
+  create_date DATETIME DEFAULT (UTC_TIMESTAMP),
   last_modified_date DATETIME NULL DEFAULT NULL ,
   status VARCHAR(30) NULL DEFAULT NULL ,
   profile_picture VARCHAR(4000) NULL DEFAULT NULL COMMENT 'URL of the profile picture' ,
@@ -75,7 +75,7 @@ ALTER TABLE qpie_user.user_email ADD CONSTRAINT uk_user_email UNIQUE  (user_id,e
 
 CREATE  TABLE IF NOT EXISTS qpie_user.user_feed_prefs (
   user_id VARCHAR(50) NOT NULL ,
-  pref_topic_id INT(10) NOT NULL );
+  pref_topic_id INT NOT NULL );
 
 ALTER TABLE qpie_user.user_feed_prefs ADD CONSTRAINT fk_ufp_user FOREIGN KEY(user_id) REFERENCES qpie_user.user(user_id);
 
@@ -85,7 +85,7 @@ CREATE  TABLE IF NOT EXISTS qpie_user.user_following (
   user_id VARCHAR(50) NOT NULL ,
   following_user VARCHAR(50) NOT NULL ,
   follow_status CHAR(1) NOT NULL ,
-  create_date DATETIME NOT NULL ,
+  create_date DATETIME DEFAULT (UTC_TIMESTAMP) ,
   modified_date DATETIME NULL DEFAULT NULL ,
   following_since DATETIME NULL DEFAULT NULL  );
 
@@ -98,7 +98,7 @@ ALTER TABLE qpie_user.user_following ADD CONSTRAINT uk_user_following UNIQUE(use
 
 CREATE  TABLE IF NOT EXISTS qpie_user.user_media_links (
   user_id VARCHAR(50) NOT NULL DEFAULT '' ,
-  media_type_id INT(4) NOT NULL ,
+  media_type_id INT NOT NULL ,
   url VARCHAR(4000) NOT NULL ,
   display_pref CHAR(1) NOT NULL DEFAULT 'Y' );
 
@@ -114,7 +114,7 @@ CREATE  TABLE IF NOT EXISTS qpie_user.user_mobile (
   mobile_number varchar(13) NOT NULL ,
   verified CHAR(1) NULL DEFAULT 'N' ,
   verified_date DATETIME NULL DEFAULT NULL ,
-  create_date DATETIME DEFAULT CONVERT_TZ(NOW(),'SYSTEM','UTC'),
+  create_date DATETIME DEFAULT (UTC_TIMESTAMP),
   current_mobile CHAR(1),
   device_id varchar(200));
 
@@ -141,7 +141,7 @@ CREATE  TABLE IF NOT EXISTS qpie_user.user_event_log (
   user_id VARCHAR(50) NOT NULL ,
   event_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   event_desc VARCHAR(500) NOT NULL,
-  create_date DATETIME NOT NULL DEFAULT CONVERT_TZ(NOW(),'SYSTEM','UTC') 
+  create_date DATETIME NOT NULL DEFAULT (UTC_TIMESTAMP) 
     );
 
 ALTER TABLE qpie_user.user_event_log ADD CONSTRAINT fk_user_event FOREIGN KEY(user_id) REFERENCES qpie_user.user(user_id);
